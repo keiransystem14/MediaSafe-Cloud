@@ -8,7 +8,7 @@ The current business problem which led me to doing this project is small and sel
 
 ## Business Targets
 
-Provide a secure cloud storage for files, photos and videos.
-Enable remote access for employees.
-Implement automated backups.
-Showcase fundementals such as OS, networking, databases, security, programming, containerzation.
+- Provide a secure cloud storage for files, photos and videos.
+- Enable remote access for employees.
+- Implement automated backups.
+- Showcase fundementals such as OS, networking, databases, security, programming, containerzation.
