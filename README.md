@@ -12,6 +12,7 @@ Additionally, some small companies and freelancers depend on large numbers of ex
 
 - Provide a secure cloud storage for files, photos and videos.
 - Enable remote access for users.
+- Enable users access to upload and view photos on mobile.
 - Implement automated backups.
 - Showcase fundementals such as OS, networking, databases, security, programming, containerzation.
 
