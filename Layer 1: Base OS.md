@@ -11,3 +11,9 @@ The current specifications of the HP ProLiant Gen8 Microserver is the following:
 * Storage - 4TB HHD (Hard Disk Drive) & 500GB SSD (Solid State Drive)
 
 
+## True NAS Scale
+
+## Proxmox VE
+
+## Ubuntu Server
+
