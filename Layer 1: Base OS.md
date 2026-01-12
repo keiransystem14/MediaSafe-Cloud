@@ -1,4 +1,4 @@
-# Operating System
+# Layer 1: Base OS
 
 In this document, I am writing about the Operating System selection. This involves learning about different operating system choices and learning which one is suitable based on the business requirments & hardware selection. 
 
