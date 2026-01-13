@@ -19,3 +19,10 @@ True NAS Scale is a Linux-based open source operating system for network-attache
 
 ## Ubuntu Server
 
+## Comparison
+
+| OS            | Storage safety | Learning value | Complexity | Stress level |
+| ------------- | -------------- | -------------- | ---------- | ------------ |
+| TrueNAS SCALE | High           | Medium         | Medium     | Low          |
+| Proxmox       | Medium         | High           | High       | High         |
+| Ubuntu Server | Medium         | High           | Medium     | Medium       |
