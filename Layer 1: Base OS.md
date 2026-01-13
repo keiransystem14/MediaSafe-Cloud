@@ -17,7 +17,7 @@ True NAS Scale is a Linux-based open source operating system for network-attache
 
 ## Proxmox VE
 
-Proxmox Virtual Environment is a open source server management platform for virtualization. 
+Proxmox Virtual Environment is a open source server management platform that manages two tech items which are virtual machines and containters from single web interface. Proxmox also integrates will with other tools such as software-defined storage, networking, high availability and backups. 
 
 
 ## Ubuntu Server
