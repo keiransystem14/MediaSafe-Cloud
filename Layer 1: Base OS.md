@@ -13,6 +13,8 @@ The current specifications of the HP ProLiant Gen8 Microserver is the following:
 
 ## True NAS Scale
 
+True NAS Scale is a Linux-based open source operating system for network-attached storage (NAS) which is built on ZFS filesystem. It offers advanced storage management alongside integrations for modern applicatons such as Docker containers and Virtual Machines (VM). It offers features such as snapshots, data replication, self-healing storage and unified file/block/object access.
+
 ## Proxmox VE
 
 ## Ubuntu Server
