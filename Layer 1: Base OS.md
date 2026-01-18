@@ -11,20 +11,22 @@ The current specifications of the HP ProLiant Gen8 Microserver is the following:
 * Storage - 4TB HHD (Hard Disk Drive) & 500GB SSD (Solid State Drive)
 
 
-## True NAS Scale
+## Operating System Selection
+
+### True NAS Scale
 
 True NAS Scale is a Linux-based open source operating system for network-attached storage (NAS) which is built on ZFS filesystem. It offers advanced storage management alongside integrations for modern applicatons such as Docker containers and Virtual Machines (VM). It offers features such as snapshots, data replication, self-healing storage and unified file/block/object access.
 
-## Proxmox VE
+### Proxmox VE
 
 Proxmox Virtual Environment is a open source server management platform that manages two tech items which are virtual machines and containters from single web interface. Proxmox also integrates will with other tools such as software-defined storage, networking, high availability and backups. 
 
 
-## Ubuntu Server
+### Ubuntu Server
 
 Ubuntu Server is an Linux based operating system that is specifically built for servers. This operating system focuses on stability, security and scaleability for hosting applications. It's a very lightweight operating system since it doesn't include graphical user interface (GUI).    
 
-## Comparison
+### Comparison
 
 | OS            | Storage safety | Learning value | Complexity | Stress level |
 | ------------- | -------------- | -------------- | ---------- | ------------ |
