@@ -13,6 +13,8 @@ The current specifications of the HP ProLiant Gen8 Microserver is the following:
 
 ## Operating System Selection
 
+When choosing an operating system. I wanted to choose an operating system that helps optimize the usage of my current server - HP ProLiant Microserver Gen8 and an OS that helps build the cloud-based photo storage. In an addition, an operating system that allows me to learn how to troubleshoot new issues with different technologies hands-on. I also want it to give me flexibility to choose the technologies that work based on the needs. 
+
 ### True NAS Scale
 
 True NAS Scale is a Linux-based open source operating system for network-attached storage (NAS) which is built on ZFS filesystem. It offers advanced storage management alongside integrations for modern applicatons such as Docker containers and Virtual Machines (VM). It offers features such as snapshots, data replication, self-healing storage and unified file/block/object access.
