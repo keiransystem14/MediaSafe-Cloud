@@ -22,6 +22,8 @@ Proxmox Virtual Environment is a open source server management platform that man
 
 ## Ubuntu Server
 
+Ubuntu Server is an Linux based operating system that is specifically built for servers. This operating system focuses on stability, security and scaleability for hosting applications. It's a very lightweight operating system since it doesn't include graphical user interface (GUI).    
+
 ## Comparison
 
 | OS            | Storage safety | Learning value | Complexity | Stress level |
