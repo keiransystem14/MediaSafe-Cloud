@@ -33,3 +33,6 @@ Ubuntu Server is an Linux based operating system that is specifically built for 
 | TrueNAS SCALE | High           | Medium         | Medium     | Low          |
 | Proxmox       | Medium         | High           | High       | High         |
 | Ubuntu Server | Medium         | High           | Medium     | Medium       |
+
+## Overall
+
