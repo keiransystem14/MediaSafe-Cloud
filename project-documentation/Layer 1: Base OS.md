@@ -39,3 +39,8 @@ Ubuntu Server is an Linux based operating system that is specifically built for 
 
 ## Overall
 
+After researching and comparing TrueNAS SCALE, Proxmox VE, and Ubuntu Server, I concluded that Ubuntu Server is the most suitable operating system for my HP ProLiant Gen8 Microserver.
+
+I chose Ubuntu Server because it provides the flexibility needed to design and configure a system tailored to building the MediaSafe cloud photo storage solution. Unlike more appliance-style platforms, Ubuntu Server allows full control over storage, services, and security, enabling a custom and scalable setup.
+
+Additionally, using Ubuntu Server gives me the opportunity to develop and master core Linux administration skills through hands-on configuration, troubleshooting, and system management. Finally, Ubuntu Server offers efficient resource utilisation, allowing me to maximise the performance and capabilities of the HP ProLiant Microserver Gen8 hardware within its 16 GB RAM limitation.
