@@ -35,10 +35,11 @@
 
 ## Networking
 
-- Primary NIC:
-- Secondary NIC:
-  - Interface:
-  - Chipset
-  - Intended use:  
+- Primary NIC: Onboard Gigabit Ethernet. 
+- Secondary NIC: TP-Link Archer T3U USB WiFi Adapter
+  - Interface: USB 3.0
+  - Chipset: Realtek
+  - Intended use: Provide network connectivity for the cloud photo storage environment.   
   
+
 
