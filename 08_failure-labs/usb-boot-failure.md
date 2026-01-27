@@ -16,12 +16,16 @@ Symptoms:
 
 Why #1: Why is grub stuck on loading screen?
 
-Possible reasons:
+Answer: Grub getting stuck on the loading screen points out that there is a mismatch between USB and the BIOS Configuration of the HP ProLiant Gen8 Microserver. 
 
-Potentially because when creating the bootable Ubuntu Server 24.04 LTS, it wasn't written correctly to the USB. 
+Why #2: Why is there a mismatch between USB and BIOS Configuration of HP ProLiant Gen8 Microserver. 
 
-Why #2: 
-Why #3:
+Answer: This is most likely due to the age of the HP ProLiant MicroServer Gen8. Older systems often have strict Legacy BIOS boot requirements. Although the BIOS can detect the USB drive and start booting from it, GRUB becomes stuck at the loading stage. This suggests a compatibility issue rather than a detection problem. It leads to the next question: why was the USB formatted in a way that is incompatible with this system?
+
+Why #3: why was the USB formatted in a way that is incompatible with this system?
+
+When I was using Rufus to create a bootable USB. I have set MBR as the partition scheme, File system to be FAT32, Target system BIOS or UEFI and Cluster size was 4096KB
+
 Why #4:
 Why #5:
 
