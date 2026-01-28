@@ -24,9 +24,12 @@ Answer: This is most likely due to the age of the HP ProLiant MicroServer Gen8. 
 
 Why #3: why was the USB formatted in a way that is incompatible with this system?
 
-When I was using Rufus to create a bootable USB. I have set MBR as the partition scheme, File system to be FAT32, Target system BIOS or UEFI and Cluster size was 4096KB
+The USB may still be incompatible because Rufus, even with standard settings, may not fully match the strict Legacy BIOS requirements of the HP ProLiant MicroServer Gen8. Although the USB was created using MBR, FAT32, and a BIOS or UEFI target system, GRUB still becomes stuck during loading. This indicates that the issue is not the USB drive itself, as multiple USB devices produced the same result, but rather how the bootloader is being written or handled by Rufus for this older hardware. This suggests that Rufus may not be the best tool for this system, and alternative tools such as Syslinux or Grub4Dos may be required to resolve the compatibility issue.
 
-Why #4:
+Why #4: Why does Rufus fail to create a fully compatible bootloader for the HP ProLiant MicroServer Gen8?
+
+
+
 Why #5:
 
 Root cause: 
