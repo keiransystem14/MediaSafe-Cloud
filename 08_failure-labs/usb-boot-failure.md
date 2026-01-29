@@ -28,9 +28,11 @@ The USB may still be incompatible because Rufus, even with standard settings, ma
 
 Why #4: Why does Rufus fail to create a fully compatible bootloader for the HP ProLiant MicroServer Gen8?
 
+Because the HP ProLiant MicroServer Gen8 relies on older Legacy BIOS behavior that may not fully support modern GRUB implementations or hybrid BIOS/UEFI boot methods used by Rufus. As a result, the bootloader loads partially but fails during initialization, causing GRUB to hang on the loading screen.
 
+Why #5: Why use other tools such as Syslinux or Grub4Dos instead of Rufus?
 
-Why #5:
+Because Syslinux and Grub4Dos are designed particularly for Legacy BIOS systems and use simpler bootloader structures. These tools avoid hybrid BIOS/UEFI boot methods and modern GRUB features that may not be supported by the HP ProLiant MicroServer Gen8. Using them increases the chance of creating a USB that the system can fully load without GRUB hanging on the loading screen.
 
 Root cause: 
 Preventive actions:
