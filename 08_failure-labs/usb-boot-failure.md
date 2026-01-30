@@ -36,3 +36,5 @@ Because Syslinux and Grub4Dos are designed particularly for Legacy BIOS systems 
 
 Root cause: 
 Preventive actions:
+
+Create a bootable USB using SysLinux tool. I have a test laptop that currently has Arch Linux installed. Once I am able to identify how I can use SysLinux tool on my test laptop. I will document the steps under this section. 
