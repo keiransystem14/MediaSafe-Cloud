@@ -11,3 +11,5 @@ Step 3 - Format and wipe the USB drive.
 - sudo parted -s /dev/sda mkpart primary fat32 1MiB 100% (it creates one partition on the USB drive where it starts at 1MiB and finishes at the end of the disk, it's marked as primary, the filesystem is FAT32). 
 - sudo parted -s /dev/sda set 1 boot on (This command marks partition 1 as bootable in MBR Partition table and sets the active/boot flag known as the bootable flag). 
 - sudo mkfs.vfat -F32 -n UBUNTU2404 /dev/sda1 (It erases all the data in partition 1 and creates a FAT32 filesystem structures, file allocation table, root directory and boot sector (FAT Boot record)).
+
+Step 4 - Install Syslinux bootloader
