@@ -3,7 +3,9 @@
 In this document, it demonstrates a step-by-step guide on how to create a bootable USB that can support Legacy BIOS requirements such as HP ProLiant Microserver Gen8 using Syslinux tool. 
 
 Step 1 - Install Ubuntu Server LTS or any Linux flavour on a laptop that you don't even use. 
+
 Step 2 - Plug in your USB and in terminal, type the command - lsblk. This command shows a list of information about the block devices such as Hard Drives, SSDs, USB drives and etc connected onto the hardware. I then try to locate the USB which is in /dev/sda/ directory. 
+
 Step 3 - Format and wipe the USB drive. 
 - sudo umount /dev/sda
 - sudo wipefs -a /dev/sda (Erase file system, RAID and partition table signatures. -a means it's all)
