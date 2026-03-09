@@ -1,24 +1,104 @@
 # Create an Ubuntu USB bootable using Syslinux tool
 
-In this document, it demonstrates a step-by-step guide on how to create a bootable USB that can support Legacy BIOS requirements such as HP ProLiant Microserver Gen8 using Syslinux tool. 
+This guide demonstrates how to create a **bootable Ubuntu USB drive using the Syslinux bootloader**.  
 
-Step 1 - Install Ubuntu Server LTS or any Linux flavour on a laptop that you don't even use. 
+This method is particularly useful for systems that require **Legacy BIOS booting**, such as the **HP ProLiant Microserver Gen8**.
 
-Step 2 - Plug in your USB and in terminal, type the command - lsblk. This command shows a list of information about the block devices such as Hard Drives, SSDs, USB drives and etc connected onto the hardware. I then try to locate the USB which is in /dev/sda/ directory. 
+Syslinux is a lightweight bootloader designed for Linux systems that boot from **FAT filesystems**, making it ideal for USB-based installers.
 
-Step 3 - Format and wipe the USB drive. 
-- sudo umount /dev/sda
-- sudo wipefs -a /dev/sda (Erase file system, RAID and partition table signatures. -a means it's all)
-- sudo parted -s /dev/sda mklabel msdos (It destroys all the existing partitons and replaces it with an empty MBR partition table)
-- sudo parted -s /dev/sda mkpart primary fat32 1MiB 100% (it creates one partition on the USB drive where it starts at 1MiB and finishes at the end of the disk, it's marked as primary, the filesystem is FAT32). 
-- sudo parted -s /dev/sda set 1 boot on (This command marks partition 1 as bootable in MBR Partition table and sets the active/boot flag known as the bootable flag). 
-- sudo mkfs.vfat -F32 -n UBUNTU2404 /dev/sda1 (It erases all the data in partition 1 and creates a FAT32 filesystem structures, file allocation table, root directory and boot sector (FAT Boot record)).
+---
 
-Step 4 - Install Syslinux bootloader
+# Step 1 - Prepare a Linux Environment
 
-sudo dd if=/usr/lib/syslinux/mbr/mbr.bin of=/dev/sda bs=440 count=1 conv=notrunc - it installs syslinux-compatiable MBR code into the first 440 bytes of disk. It doesn't delete the partitions, modify the partitions table, erase data. 
+## Action
+Install **Ubuntu Server LTS** or any Linux distribution on a test machine/laptop. 
 
-Mount USB and ISO
+## Why is this step required?
+A Linux environment is required because the tool used in the guide (such as `syslinux`, `parted`, `wipefs` and `dd`) are native linux utilities. 
+
+These tools allowed me to:
+
+- Prepare and partition the USB drive.
+- Install the syslinux bootloader.
+- Mount and copy the Ubuntu ISO contents.
+
+---
+
+# Step 2 - Identify the USB
+
+## Action
+Insert USB and run the following command in terminal:
+```bash
+lsblk
+```
+This command lists all the blocked devices (such as USB, Nvme, Solid State Drive, Hard Disk Drive) connected to the laptop. 
+
+Locate the USB (for example: /dev/sda).
+
+## Why is this step required?
+Before modifying any storage device, we must correctly identify the USB. 
+
+`lsblk` shows:
+- Devices
+- Disk sizes
+- Partitions
+- Mount points
+
+**Warning**: Selecting the wrong disk could result in permenant data loss. 
+
+---
+
+# Step 3 - Wipe and Format the USB Drive
+
+This step prepares the USB with a clean partition table and FAT32 filesystem, which syslinux requires. 
+
+---
+
+## Umount the USB
+
+```bash
+sudo umount /dev/sda
+```
+
+### Why is this step required?
+Ensures the device is not actively being used on the system before making modifications. 
+
+---
+
+## Remove existing Filesystem signatures
+
+```bash
+sudo wipefs -a /dev/sda
+```
+
+## Why is this step required?
+
+Removes existing:
+- Filesystem signatures
+- RAID metadata
+- Old partition table informaton.
+
+This ensures the disk starts at a complete clean state. 
+
+
+
+
+
+- Step 3 - Format and wipe the USB drive. 
+  - sudo umount /dev/sda
+  - sudo wipefs -a /dev/sda (Erase file system, RAID and partition table signatures. -a means it's all)
+  - sudo parted -s /dev/sda mklabel msdos (It destroys all the existing partitons and replaces it with an empty MBR partition table)
+  - sudo parted -s /dev/sda mkpart primary fat32 1MiB 100% (it creates one partition on the USB drive where it starts at 1MiB and finishes at the end of the disk, it's marked as primary, the filesystem is   FAT32).  
+  - sudo parted -s /dev/sda set 1 boot on (This command marks partition 1 as bootable in MBR Partition table and sets the active/boot flag known as the bootable flag). 
+  - sudo mkfs.vfat -F32 -n UBUNTU2404 /dev/sda1 (It erases all the data in partition 1 and creates a FAT32 filesystem structures, file allocation table, root directory and boot sector (FAT Boot record)).
+
+- Step 4 - Install Syslinux bootloader
+  
+  - Sudo syslinux -i /dev/sda1 (writes boot code into partition boot sector (PBR) and creates a file called ldlinux.sys and it marks the file as hidden. It then prepares the partition to load syslinux.cfg. The partition can now boot using sysliunux.cfg.
+    
+  - sudo dd if=/usr/lib/syslinux/mbr/mbr.bin of=/dev/sda bs=440 count=1 conv=notrunc - it installs syslinux-compatiable MBR code into the first 440 bytes of disk. It doesn't delete the partitions, modify the partitions table, erase data. 
+
+Step 5 - Mount USB and ISO
 
 mkdir -p /tmp/usb /tmp/iso - it creates empty folders as mount points.
 
