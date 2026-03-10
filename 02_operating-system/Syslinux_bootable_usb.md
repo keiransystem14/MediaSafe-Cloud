@@ -10,7 +10,6 @@ Syslinux is a lightweight bootloader designed for Linux systems that boot from *
 
 # Step 1 - Prepare a Linux Environment
 
-## Action
 Install **Ubuntu Server LTS** or any Linux distribution on a test machine/laptop. 
 
 ## Why is this step required?
@@ -39,7 +38,6 @@ wget https://releases.ubuntu.com/24.03/ubuntu-ubuntu-24.04-live-server-amd.iso
 
 # Step 3 - Identify the USB
 
-## Action
 Insert USB and run the following command in terminal:
 ```bash
 lsblk
