@@ -24,7 +24,20 @@ These tools allowed me to:
 
 ---
 
-# Step 2 - Identify the USB
+# Step 2 - Download Ubuntu Sever LTS ISO
+
+```bash
+wget https://releases.ubuntu.com/24.03/ubuntu-ubuntu-24.04-live-server-amd.iso
+```
+
+## Why is this step required?
+- `wget` downloads the files directly from internet via terminal.
+- The URL points to the official Ubuntu 24.03 LTS Server ISO.
+- The file will be saved in your current directory. 
+
+---
+
+# Step 3 - Identify the USB
 
 ## Action
 Insert USB and run the following command in terminal:
@@ -48,7 +61,7 @@ Before modifying any storage device, we must correctly identify the USB.
 
 ---
 
-# Step 3 - Wipe and Format the USB Drive
+# Step 4 - Wipe and Format the USB Drive
 
 This step prepares the USB with a clean partition table and FAT32 filesystem, which syslinux requires. 
 
@@ -71,8 +84,7 @@ Ensures the device is not actively being used on the system before making modifi
 sudo wipefs -a /dev/sda
 ```
 
-## Why is this step required?
-
+### Why is this step required?
 Removes existing:
 - Filesystem signatures
 - RAID metadata
@@ -80,41 +92,131 @@ Removes existing:
 
 This ensures the disk starts at a complete clean state. 
 
+---
 
+## Create an MBR Partition Table
 
+```bash
+sudo parted -s /dev/sda mklabel msdos
+```
 
+### Why is this step required?
+Legacy BIOS systems such as HP ProLiant Microserver Gen8 requires MBR (Master Boot Record) partition table. This command removes any existing partitions and creates a new empty MBR layout. 
 
-- Step 3 - Format and wipe the USB drive. 
-  - sudo umount /dev/sda
-  - sudo wipefs -a /dev/sda (Erase file system, RAID and partition table signatures. -a means it's all)
-  - sudo parted -s /dev/sda mklabel msdos (It destroys all the existing partitons and replaces it with an empty MBR partition table)
-  - sudo parted -s /dev/sda mkpart primary fat32 1MiB 100% (it creates one partition on the USB drive where it starts at 1MiB and finishes at the end of the disk, it's marked as primary, the filesystem is   FAT32).  
-  - sudo parted -s /dev/sda set 1 boot on (This command marks partition 1 as bootable in MBR Partition table and sets the active/boot flag known as the bootable flag). 
-  - sudo mkfs.vfat -F32 -n UBUNTU2404 /dev/sda1 (It erases all the data in partition 1 and creates a FAT32 filesystem structures, file allocation table, root directory and boot sector (FAT Boot record)).
+---
 
-- Step 4 - Install Syslinux bootloader
-  
-  - Sudo syslinux -i /dev/sda1 (writes boot code into partition boot sector (PBR) and creates a file called ldlinux.sys and it marks the file as hidden. It then prepares the partition to load syslinux.cfg. The partition can now boot using sysliunux.cfg.
-    
-  - sudo dd if=/usr/lib/syslinux/mbr/mbr.bin of=/dev/sda bs=440 count=1 conv=notrunc - it installs syslinux-compatiable MBR code into the first 440 bytes of disk. It doesn't delete the partitions, modify the partitions table, erase data. 
+## Mark the Partition as Bootable
 
-Step 5 - Mount USB and ISO
+```bash
+sudo parted -s /dev/sda set 1 boot on
+```
 
-mkdir -p /tmp/usb /tmp/iso - it creates empty folders as mount points.
+### Why is this step required?
+Sets the boot flag in the Master Boot Record (MBR) partition table. Legacy BIOS checks this flag to determine which partition should be used for booting. 
 
-sudo mount /dev/sda1 /tmp/usb - It makes /dev/sda1 accessible at /tmp/usb/. After running the command, files are stored at on USB partition becomes visible at /tmp/usb directory. Anything written into /tmp/usb goes to the USB. 
+---
 
-sudo mount -o loop ubuntu-24.04-live-server-amd.iso /tmp/iso - This command mounts an ISO disk image so you can browse contents like a normal folder. After running this command, it shows the files that you see if you inserted a Ubuntu installer DVD. 
+## Format the partition as FAT32
 
-Step 5 - Copy ISO files to USB
+```bash
+sudo mkfs.vfat -F32 -n UBUNTU2404 /dev/sda1
+```
 
-Sudo cp -a /tmp/iso/. /tmp/usb - It copies and pastes files and contents from /tmp/iso folder to the USB. 
-Sync - forces linux to write any buffered filesystem data to the disk immediately. Why it matters is because linux normally buffers writes in memory for performance. If you unplug the USB too soon, the data might still be in the RAM. Running the sync means all the files are fully copied to the USB device and it's safe to remove after unmounting. 
+### Why is this step required?
+Syslinux requires a FAT filesystem. 
 
-Step 6 - Create syslinux config
+This command:
+- Creates a FAT32 filesystem.
+- Writes the filesystem structures.
+- Creates the FAT boot record.
 
-Sudo nano /tmp/usb/syslinux.cfg - creating a syslinux config
+The label `UBUNTU2404` helps identify the USB mounted. 
 
+---
+
+# Step 5 – Mount the USB and Ubuntu ISO
+
+Both the USB partition and Ubuntu ISO image must be mounted before copying the files. 
+
+---
+
+## Create Mount Directories
+
+```bash
+mkdir -p /tmp/iso /tmp/usb
+```
+
+### Why is this step required?
+These directeries act as **mount points** where Linux attaches filesystems.
+
+---
+
+## Mount the USB partition
+
+```bash
+sudo mount /dev/sda1 /tmp/usb
+```
+
+### Why is this step required?
+Makes the USB filesystem accessible at `/tmp/usb`. Anything written into this directory is directly written to the USB drive. 
+
+---
+
+## Mount the Ubuntu ISO
+
+```bash
+sudo mount -o loop ubuntu-24.04-live-server-amd.iso /tmp/iso
+```
+
+### Why is this step required?
+The `-o loop` allows Linux to treat the ISO file like a virtual disk. This lets you browse the ISO contents like a DVD. 
+
+---
+
+# Step 6 - Copy Ubuntu Files to USB
+
+```bash
+sudo cp -a /tmp/iso/. /tmp/usb/
+```
+
+## Why is this step required?
+This copies all the files from the Ubuntu ISO to the USB drive. 
+
+The `-a` flag preserves:
+- Permissions
+- Symbolic links
+- Directory structure
+
+This effectively replicates the Ubuntu installer media. 
+
+---
+
+## Flush Filesystem Buffers
+
+```bash
+sync
+```
+
+## Why is this step required?
+
+Linux buffers disk writes in memory for performance. Running `sync` forces all the buffer data to be written to disk. 
+
+This ensures:
+- Files are fully copied.
+- The USB can be safely removed after unmounting.
+
+---
+
+# Step 7 - Create the Syslinux Configuration File
+
+First open the syslinux.cfg file using nano text editor by entering the command below:
+
+```bash
+sudo nano /tmp/usb/syslinux.cfg
+```
+Add the following configuration:
+
+```bash
 DEFAULT ubuntu
 PROMPT 0
 TIMEOUT 50
@@ -122,36 +224,101 @@ TIMEOUT 50
 LABEL ubuntu
   KERNEL /casper/vmlinuz
   APPEND initrd=/casper/initrd quiet ---
+```
+## Why is this step required?
+The syslinux.cfg file tells the bootloader:
+- Which kernel to load
+- Which parameters to use
 
-The enteries casper/vmlinuz and casper/initrd in syslinux.cfg tells the boot loader which kernel and initial RAM disk to load when booting Ubuntu installer/live environment. 
+### Kernel Entry
 
-/casper/vmlinuz - vmlinuz is the linux kernel file and KERNEL tells Syslinux which kernel to load into memory. This line means load the linux kernel located at /casper/vmlinz. Kernel is the core of operating system it manages hardware, memory and processes and etc. 
+```bash
+KERNEL /casper/vmlinuz
+```
+`vmlinuz` is the Linux kernel. 
 
+The kernel is responsible for:
+- Hardware management
+- Memory management
+- Process control
+
+Syslinux loads this kernel into memory during boot. 
+
+---
+
+### Initial RAM Disk
+
+```bash
 APPEND initrd=/casper/initrd quiet ---
+```
+This tells the kernel to load the initial RAM disk (initrd).
 
-It passes the boot parameters to the kernel. This tells the kernel to load an initial RAM disk. Ignited (initial RAM disk) contains temporary root filesystem. It loads drivers and scripts needed early in boot. Without it, kernel wouldn't know how to find the real filesystem inside the ISO. 
+The initrd:
+- Contains temporary boot scripts
+- Loads essential drivers
+- Prepares the system to mount the real filesystem
 
-Why Casper directory?
+Without it, the kernel would not know how to access the Ubuntu live environment. 
 
-Casper is ubuntu's live boot system used by live cd and installers. It's responsible for detecting the boot media, mounting the compressed file system, creating live environment for RAM, starting the installer or live session. 
-The boot process:
-1. Syslinux loads vmlinuz (kernel)
-2. Kernel loads initrd
-3. Initrd runs casper scripts
-4. Casper mounts filesystem.squashfs
-5. Ubuntu live/installer environment starts. 
+---
 
+### Why the Casper Directory is used?
 
+The `/casper` directory is part of Ubuntu's live boot system. 
+
+It contains the components required to run Ubuntu from installation media. 
+
+Casper is responsible for:
+- Detecting boot media
+- Mounting the compressed filesystem
+- Creating a temporary RAM-based environment.
+- Launching the Ubuntu installer or live session.
+
+---
+
+### Ubuntu Live Boot Process
+1. BIOS loads the Syslinux bootloader.
+2. Syslinux loads the Linux kernel (vmlinuz)
+3. The kernel loads the initrd
+4. initrd runs Casper scripts
+5. Casper mounts `filesystem.squashfs`
+6. Ubuntu installer starts
+
+---
+
+# Step 8 - Copy required Syslinux Runtime Modules
+
+```bash
 sudo cp /usr/lib/syslinux/modules/bios/ldlinux.c32 /tmp/usb/
 sudo cp /usr/lib/syslinux/modules/bios/libcom32.c32 /tmp/usb/
 sudo cp /usr/lib/syslinux/modules/bios/libutil.c32 /tmp/usb/
+```
 
-Why the syslinux modules need to be copied is because syslinux needs its runtime modules on the boot media in order to start properly. In addition, when the BIOS boots from USB:
+## Why are these files required?
 
-- BIOS loads the syslinux boot sector. 
-- Boot sector loads ldlinux.c32
-- ldlinux.c32 loads libraries and configuration
-- syslinux.cfg tells to load the Linux kernel
+Syslinux requires runtime modules to be run correctly. 
 
-Sudo umount /tmp/iso
-Sudo umount /tmp/usb 
+During boot:
+
+1. BIOS loads the syslinux boot sector
+2. The boot sector loads `ldlinux.c32`
+3. `ldlinux.c32` loads supporting libraries
+4. Syslinux reads syslinux.cfg
+5. Syslinux loads the Linux kernel.
+
+Without these modules, Syslinux cannot complete the boot process. 
+
+---
+
+# Final Notes
+
+After copying all files:
+
+1. Unmount the drives:
+```bash
+sudo umount /tmp/usb
+sudo umount /tmp/iso
+```
+
+2. Safely remove the USB.
+The USB drive should now boot Ubuntu on Legacy BIOS system like HP ProLiant Microserver Gen8 using Syslinux.
